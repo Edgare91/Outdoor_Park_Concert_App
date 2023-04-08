@@ -3,13 +3,16 @@ import os.path
 
 
 def load_seating_data():
-    with open("seating.json", "r") as f:
-        data = json.load(f)
-        seating = {}
-        for k, v in data.items():
-            k_tuple = tuple(map(int, k.strip("()").split(",")))
-            seating[k_tuple] = v
-        return seating
+    try:
+        with open("seating.json", "r") as f:
+            data = json.load(f)
+            seating = {}
+            for k, v in data.items():
+                k_tuple = tuple(map(int, k.strip("()").split(",")))
+                seating[k_tuple] = v
+            return seating
+    except FileNotFoundError:
+        return {}
 
 
 # Check if the JSON file exists
