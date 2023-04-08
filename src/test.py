@@ -14,23 +14,22 @@ NUM_R = 20
 NUM_C = 26
 
 
-def print_seating():
+def print_seating(seating):
     """
     Print the current seating chart.
     """
     print("\n            Stage    \n")
     print("   " + " ".join([chr(i)
           for i in range(ord('A'), ord('A')+NUM_C)]))
-
-    if os.path.isfile('seating.json'):
-        # si el archivo existe, cargar el contenido del archivo JSON y asignarlo a seating
-        seating = load_seating_data()
-    else:
-        seating = {}
-
     for i in range(1, NUM_R+1):
         row_str = str(i).zfill(2) + " "
         for j in range(1, NUM_C+1):
+
+            if os.path.exists("seating.json"):
+                seating = load_seating_data()
+            else:
+                seating = {}
+
             if (i, j) in seating:
                 row_str += occupied_seat + " "
             else:
@@ -38,33 +37,12 @@ def print_seating():
         print(row_str)
 
 
-def save_seating_data():
-    json_seating = json.dumps(
-        {str(k): v for k, v in seating.items()}, default=lambda x: list(x))
-    with open("seating.json", 'w') as file:
-        file.write(json_seating)
-
-
-def load_seating_data():
-    try:
-        with open("seating.json", "r") as f:
-            seating = json.load(f)
-
-        # Convertir las claves del diccionario a tuplas
-        seating = {eval(k): v for k, v in seating.items()}
-
-        return seating
-
-    except FileNotFoundError:
-        return {}
-
-
 def buy_ticket():
     """
     Buy a ticket by selecting a seat.
     """
 
-    print_seating()
+    print_seating(seating)
 
     while True:
         seat = input("Enter seat (e.g. 10A): ").upper()
@@ -79,12 +57,6 @@ def buy_ticket():
         if row < 1 or row > NUM_R or col < 1 or col > NUM_C:
             print("Invalid seat. Please try again.")
             continue
-        if os.path.isfile('seating.json'):
-            # si el archivo existe, cargar el contenido del archivo JSON y asignarlo a seating
-            seating = load_seating_data()
-        else:
-            seating = {}
-
         if (row, col) in seating:
             print("Seat already taken. Please try again.")
             continue
@@ -95,7 +67,28 @@ def buy_ticket():
     # seating[(row, col)] = {"Name": name, "E-mail", email}
     seating[(row, col)] = occupied_seat
 
-    print_seating()
+    save_seating_data(seating)
+
+    print_seating(seating)
+
+
+def save_seating_data(seating):
+
+    seating_str = {}
+    for k, v in seating.items():
+        seating_str[str(k)] = v
+    with open("seating.json", 'w') as file:
+        json.dump(seating_str, file)
+
+
+def load_seating_data():
+    with open("seating.json", "r") as f:
+        data = json.load(f)
+        seating = {}
+        for k, v in data.items():
+            k_tuple = tuple(map(int, k.strip("()").split(",")))
+            seating[k_tuple] = v
+        return seating
 
 
 def menu():
@@ -130,7 +123,6 @@ def menu():
         elif first_char == 'b':
 
             buy_ticket()
-            save_seating_data()
 
             print("\nSuccesced purchased!")
 
@@ -138,7 +130,8 @@ def menu():
 
         elif first_char == 'v':
 
-            print_seating()
+            seating = load_seating_data()
+            print_seating(seating)
 
         elif first_char == 's':
             print("SEARCH")
