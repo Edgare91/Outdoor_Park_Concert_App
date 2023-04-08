@@ -1,7 +1,24 @@
 import json
 import os.path
 
-seating = {}
+
+def load_seating_data():
+    with open("seating.json", "r") as f:
+        data = json.load(f)
+        seating = {}
+        for k, v in data.items():
+            k_tuple = tuple(map(int, k.strip("()").split(",")))
+            seating[k_tuple] = v
+        return seating
+
+
+# Check if the JSON file exists
+if os.path.exists("seating.json"):
+    # Load the contents of the file into a dictionary
+    seating = load_seating_data()
+else:
+    # If the file doesn't exist, create an empty dictionary
+    seating = {}
 
 # available seat
 available_seat = '.'
@@ -79,16 +96,6 @@ def save_seating_data(seating):
         seating_str[str(k)] = v
     with open("seating.json", 'w') as file:
         json.dump(seating_str, file)
-
-
-def load_seating_data():
-    with open("seating.json", "r") as f:
-        data = json.load(f)
-        seating = {}
-        for k, v in data.items():
-            k_tuple = tuple(map(int, k.strip("()").split(",")))
-            seating[k_tuple] = v
-        return seating
 
 
 def menu():
