@@ -5,6 +5,8 @@ import os.path
 
 # Esto solo esta en mi main
 
+# Esto solo esta en mi PRICES
+
 
 def load_seating_data():
     try:
