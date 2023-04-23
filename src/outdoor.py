@@ -1,3 +1,4 @@
+import login
 import json
 import os.path
 
@@ -89,6 +90,8 @@ def buy_ticket():
     # seating[(row, col)] = {"Name": name, "E-mail", email}
     seating[(row, col)] = occupied_seat
 
+    login.receipt()
+
     save_seating_data(seating)
 
     print_seating(seating)
@@ -137,8 +140,6 @@ def menu():
             buy_ticket()
 
             print("\nSuccesced purchased!")
-
-            print("Seating data saved")
 
         elif first_char == 'v':
 
