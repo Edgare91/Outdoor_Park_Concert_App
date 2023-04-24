@@ -58,4 +58,17 @@ def receipt():
     # tax =
     # total =
 
-    print(name)
+    receipts = {
+        "name": name,
+        "email": email,
+        # number_tickets
+        # seat_type =
+        # seats =
+        # ticket_cost
+        # mask_fee =
+        # sub_total
+        # tax =
+        # total =
+    }
+
+    return receipts

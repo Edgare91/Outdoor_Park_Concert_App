@@ -1,5 +1,6 @@
 import login
 import json
+from tabulate import tabulate
 import os.path
 
 # ITEMS
@@ -18,6 +19,16 @@ def load_seating_data():
         return {}
 
 
+def load_customer_data():
+    try:
+        with open('receipts.json') as f:
+            receipts = json.load(f)
+
+        print(json.dumps(receipts, indent=4))
+    except FileNotFoundError:
+        return {}
+
+
 # Check if the JSON file exists
 if os.path.exists("seating.json"):
     # Load the contents of the file into a dictionary
@@ -25,6 +36,13 @@ if os.path.exists("seating.json"):
 else:
     # If the file doesn't exist, create an empty dictionary
     seating = {}
+
+if os.path.exists("receipts.json"):
+    # Load the contents of the file into a dictionary
+    receipts = load_seating_data()
+else:
+    # If the file doesn't exist, create an empty dictionary
+    receipts = {}
 
 # available seat
 available_seat = '.'
@@ -90,11 +108,18 @@ def buy_ticket():
     # seating[(row, col)] = {"Name": name, "E-mail", email}
     seating[(row, col)] = occupied_seat
 
-    login.receipt()
+    receipts = login.receipt()
+
+    save_custumer_data(receipts)
 
     save_seating_data(seating)
 
     print_seating(seating)
+
+
+def save_custumer_data(receipts):
+    with open("receipts.json", 'w') as file:
+        json.dump(receipts, file, indent=4)
 
 
 def save_seating_data(seating):
@@ -104,6 +129,27 @@ def save_seating_data(seating):
         seating_str[str(k)] = v
     with open("seating.json", 'w') as file:
         json.dump(seating_str, file)
+
+
+def print_receipt(data):
+    template = """
+    -----------------------------
+            RECEIPT
+    -----------------------------
+    Nombre: {name}
+    Email: {email}
+    -----------------------------
+    Thank you for your purchase {name}!
+    """
+    print(template.format(**data))
+
+    # Cantidad de boletos: {num_tickets}
+    # Tipo de asiento: {seat_type}
+    # Costo del boleto: {ticket_cost:.2f}
+    # Costo de la máscara: {mask_fee:.2f}
+    # Subtotal: {sub_total:.2f}
+    # Impuesto: {tax:.2f}
+    # Total: {total:.2f}
 
 
 def menu():
@@ -150,7 +196,16 @@ def menu():
             print("SEARCH")
 
         elif first_char == 'd':
-            print("DISPLAY")
+
+            try:
+
+                with open('receipts.json') as f:
+                    data = json.load(f)
+
+                print_receipt(data)
+
+            except FileNotFoundError:
+                print("Not purchases yet")
 
         else:
             print(first_char + " is not a valid option, please try again. ")
