@@ -23,8 +23,7 @@ def load_customer_data():
     try:
         with open('receipts.json') as f:
             receipts = json.load(f)
-
-        print(json.dumps(receipts, indent=4))
+            return receipts
     except FileNotFoundError:
         return {}
 
@@ -36,13 +35,6 @@ if os.path.exists("seating.json"):
 else:
     # If the file doesn't exist, create an empty dictionary
     seating = {}
-
-if os.path.exists("receipts.json"):
-    # Load the contents of the file into a dictionary
-    receipts = load_seating_data()
-else:
-    # If the file doesn't exist, create an empty dictionary
-    receipts = {}
 
 # available seat
 available_seat = '.'
@@ -110,14 +102,14 @@ def buy_ticket():
 
     receipts = login.receipt()
 
-    save_custumer_data(receipts)
+    save_customer_data(receipts)
 
     save_seating_data(seating)
 
     print_seating(seating)
 
 
-def save_custumer_data(receipts):
+def save_customer_data(receipts):
     with open("receipts.json", 'w') as file:
         json.dump(receipts, file, indent=4)
 
@@ -196,13 +188,8 @@ def menu():
             print("SEARCH")
 
         elif first_char == 'd':
-
             try:
-
-                with open('receipts.json') as f:
-                    data = json.load(f)
-
-                print_receipt(data)
+                print_receipt(load_customer_data())
 
             except FileNotFoundError:
                 print("Not purchases yet")
