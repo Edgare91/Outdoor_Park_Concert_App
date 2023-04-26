@@ -1,7 +1,6 @@
-import login
-import json
-from tabulate import tabulate
 import os.path
+import json
+import login
 
 # ITEMS
 
@@ -109,9 +108,17 @@ def buy_ticket():
     print_seating(seating)
 
 
-def save_customer_data(receipts):
-    with open("receipts.json", 'w') as file:
-        json.dump(receipts, file, indent=4)
+def save_customer_data(receipt_data):
+    try:
+        with open('receipts.json', 'r') as f:
+            receipts = json.load(f)
+    except FileNotFoundError:
+        receipts = []
+
+    receipts.append(receipt_data)
+
+    with open('receipts.json', 'w') as f:
+        json.dump(receipt_data, f, indent=4)
 
 
 def save_seating_data(seating):
@@ -191,7 +198,7 @@ def menu():
             try:
                 print_receipt(load_customer_data())
 
-            except FileNotFoundError:
+            except KeyError:
                 print("Not purchases yet")
 
         else:
