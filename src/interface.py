@@ -115,10 +115,10 @@ def save_customer_data(receipt_data):
     except FileNotFoundError:
         receipts = []
 
-    receipts.append(receipt_data)
+    receipts.update(receipt_data)
 
     with open('receipts.json', 'w') as f:
-        json.dump(receipt_data, f, indent=4)
+        json.dump(receipts, f, indent=4)
 
 
 def save_seating_data(seating):
