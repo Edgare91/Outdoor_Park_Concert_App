@@ -24,7 +24,7 @@ def load_customer_data():
             receipts = json.load(f)
             return receipts
     except FileNotFoundError:
-        return {}
+        return []
 
 
 # Check if the JSON file exists
@@ -99,26 +99,23 @@ def buy_ticket():
     # seating[(row, col)] = {"Name": name, "E-mail", email}
     seating[(row, col)] = occupied_seat
 
-    receipts = login.receipt()
+    receipts_data = login.receipt()
 
-    save_customer_data(receipts)
+    save_customer_data(receipts_data)
 
     save_seating_data(seating)
 
     print_seating(seating)
 
 
-def save_customer_data(receipt_data):
-    try:
-        with open('receipts.json', 'r') as f:
-            receipts = json.load(f)
-    except FileNotFoundError:
-        receipts = []
+def save_customer_data(receipts_data):
 
-    receipts.update(receipt_data)
+    customer_data = load_customer_data()
+
+    customer_data.append(receipts_data)
 
     with open('receipts.json', 'w') as f:
-        json.dump(receipts, f, indent=4)
+        json.dump(customer_data, f, indent=4)
 
 
 def save_seating_data(seating):
