@@ -1,11 +1,8 @@
-import json
 import os.path
+import json
+import login
 
 # ITEMS
-
-# Esto solo esta en mi main
-
-# Esto solo esta en mi PRICES
 
 
 def load_seating_data():
@@ -19,6 +16,15 @@ def load_seating_data():
             return seating
     except FileNotFoundError:
         return {}
+
+
+def load_customer_data():
+    try:
+        with open('receipts.json') as f:
+            receipts = json.load(f)
+            return receipts
+    except FileNotFoundError:
+        return []
 
 
 # Check if the JSON file exists
@@ -93,9 +99,23 @@ def buy_ticket():
     # seating[(row, col)] = {"Name": name, "E-mail", email}
     seating[(row, col)] = occupied_seat
 
+    receipts_data = login.receipt()
+
+    save_customer_data(receipts_data)
+
     save_seating_data(seating)
 
     print_seating(seating)
+
+
+def save_customer_data(receipts_data):
+
+    customer_data = load_customer_data()
+
+    customer_data.append(receipts_data)
+
+    with open('receipts.json', 'w') as f:
+        json.dump(customer_data, f, indent=4)
 
 
 def save_seating_data(seating):
@@ -105,6 +125,27 @@ def save_seating_data(seating):
         seating_str[str(k)] = v
     with open("seating.json", 'w') as file:
         json.dump(seating_str, file)
+
+
+def print_receipt(data):
+    template = """
+    -----------------------------
+            RECEIPT
+    -----------------------------
+    Nombre: {name}
+    Email: {email}
+    -----------------------------
+    Thank you for your purchase {name}!
+    """
+    print(template.format(**data))
+
+    # Cantidad de boletos: {num_tickets}
+    # Tipo de asiento: {seat_type}
+    # Costo del boleto: {ticket_cost:.2f}
+    # Costo de la máscara: {mask_fee:.2f}
+    # Subtotal: {sub_total:.2f}
+    # Impuesto: {tax:.2f}
+    # Total: {total:.2f}
 
 
 def menu():
@@ -142,8 +183,6 @@ def menu():
 
             print("\nSuccesced purchased!")
 
-            print("Seating data saved")
-
         elif first_char == 'v':
 
             seating = load_seating_data()
@@ -153,7 +192,11 @@ def menu():
             print("SEARCH")
 
         elif first_char == 'd':
-            print("DISPLAY")
+            try:
+                print_receipt(load_customer_data())
+
+            except KeyError:
+                print("Not purchases yet")
 
         else:
             print(first_char + " is not a valid option, please try again. ")
