@@ -20,7 +20,7 @@ def load_seating_data():
 
 def load_customer_data():
     try:
-        with open('receipts.json') as f:
+        with open("receipts.json") as f:
             receipts = json.load(f)
             return receipts
     except FileNotFoundError:
@@ -36,9 +36,9 @@ else:
     seating = {}
 
 # available seat
-available_seat = '.'
-occupied_seat = 'X'
-empty_covid = 'e'
+available_seat = "."
+occupied_seat = "X"
+empty_covid = "e"
 
 
 # Define the number of rows and columns in the seating chart
@@ -51,12 +51,10 @@ def print_seating(seating):
     Print the current seating chart.
     """
     print("\n            Stage    \n")
-    print("   " + " ".join([chr(i)
-          for i in range(ord('A'), ord('A')+NUM_C)]))
-    for i in range(1, NUM_R+1):
+    print("   " + " ".join([chr(i) for i in range(ord("A"), ord("A") + NUM_C)]))
+    for i in range(1, NUM_R + 1):
         row_str = str(i).zfill(2) + " "
-        for j in range(1, NUM_C+1):
-
+        for j in range(1, NUM_C + 1):
             if os.path.exists("seating.json"):
                 seating = load_seating_data()
             else:
@@ -85,7 +83,7 @@ def buy_ticket():
         if not row_str.isdigit():
             print("Invalid seat. Please try again.")
             continue
-        row, col = int(row_str), ord(col_str) - ord('A') + 1
+        row, col = int(row_str), ord(col_str) - ord("A") + 1
         if row < 1 or row > NUM_R or col < 1 or col > NUM_C:
             print("Invalid seat. Please try again.")
             continue
@@ -109,47 +107,53 @@ def buy_ticket():
 
 
 def save_customer_data(receipts_data):
-
     customer_data = load_customer_data()
 
     customer_data.append(receipts_data)
 
-    with open('receipts.json', 'w') as f:
+    with open("receipts.json", "w") as f:
         json.dump(customer_data, f, indent=4)
 
 
 def save_seating_data(seating):
-
     seating_str = {}
     for k, v in seating.items():
         seating_str[str(k)] = v
-    with open("seating.json", 'w') as file:
+    with open("seating.json", "w") as file:
         json.dump(seating_str, file)
 
 
 def print_receipt(data):
-    template = """
-    -----------------------------
-            RECEIPT
-    -----------------------------
-    Nombre: {name}
-    Email: {email}
-    -----------------------------
-    Thank you for your purchase {name}!
-    """
-    print(template.format(**data))
+    customer_data = load_customer_data()
 
-    # Cantidad de boletos: {num_tickets}
-    # Tipo de asiento: {seat_type}
-    # Costo del boleto: {ticket_cost:.2f}
-    # Costo de la máscara: {mask_fee:.2f}
-    # Subtotal: {sub_total:.2f}
-    # Impuesto: {tax:.2f}
-    # Total: {total:.2f}
+    for receipt_data in customer_data:
+        print("Name:", receipt_data["name"])
+        print("Email:", receipt_data["email"])
+        print("-" * 20)
+
+
+# def print_receipt(data):
+#     template = """
+#     -----------------------------
+#             RECEIPT
+#     -----------------------------
+#     Nombre: {name}
+#     Email: {email}
+#     -----------------------------
+#     Thank you for your purchase {name}!
+#     """
+#     print(template.format(**data))
+
+# Cantidad de boletos: {num_tickets}
+# Tipo de asiento: {seat_type}
+# Costo del boleto: {ticket_cost:.2f}
+# Costo de la máscara: {mask_fee:.2f}
+# Subtotal: {sub_total:.2f}
+# Impuesto: {tax:.2f}
+# Total: {total:.2f}
 
 
 def menu():
-
     # Print the initial seating chart
     """
     Boddy of the app / Menu / Switches cases
@@ -158,7 +162,6 @@ def menu():
     user_quit = False
     # While userQuit not True still printing the Menu
     while not user_quit:
-
         line = f"\n    -----------------------------------------"
 
         print(line)
@@ -174,24 +177,22 @@ def menu():
         lower_input = user_input.lower()
         first_char = lower_input[0:1]
 
-        if first_char == 'q':
+        if first_char == "q":
             user_quit = True
 
-        elif first_char == 'b':
-
+        elif first_char == "b":
             buy_ticket()
 
             print("\nSuccesced purchased!")
 
-        elif first_char == 'v':
-
+        elif first_char == "v":
             seating = load_seating_data()
             print_seating(seating)
 
-        elif first_char == 's':
+        elif first_char == "s":
             print("SEARCH")
 
-        elif first_char == 'd':
+        elif first_char == "d":
             try:
                 print_receipt(load_customer_data())
 
