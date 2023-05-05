@@ -126,31 +126,14 @@ def save_seating_data(seating):
 def print_receipt(data):
     customer_data = load_customer_data()
 
-    for receipt_data in customer_data:
-        print("Name:", receipt_data["name"])
-        print("Email:", receipt_data["email"])
-        print("-" * 20)
+    if len(customer_data) == 0:
+        print("No purchases yet")
 
-
-# def print_receipt(data):
-#     template = """
-#     -----------------------------
-#             RECEIPT
-#     -----------------------------
-#     Nombre: {name}
-#     Email: {email}
-#     -----------------------------
-#     Thank you for your purchase {name}!
-#     """
-#     print(template.format(**data))
-
-# Cantidad de boletos: {num_tickets}
-# Tipo de asiento: {seat_type}
-# Costo del boleto: {ticket_cost:.2f}
-# Costo de la máscara: {mask_fee:.2f}
-# Subtotal: {sub_total:.2f}
-# Impuesto: {tax:.2f}
-# Total: {total:.2f}
+    else:
+        for receipt_data in customer_data:
+            print("Name:", receipt_data["name"])
+            print("Email:", receipt_data["email"])
+            print("-" * 20)
 
 
 def menu():
