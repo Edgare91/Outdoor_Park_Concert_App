@@ -133,6 +133,7 @@ def print_receipt(data):
         for receipt_data in customer_data:
             print("Name:", receipt_data["name"])
             print("Email:", receipt_data["email"])
+
             print("-" * 20)
 
 
