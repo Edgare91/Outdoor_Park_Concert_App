@@ -117,13 +117,13 @@ def buy_ticket():
 
 
 def receipt(selected_row):
-    name = input("Please emter your name: ")
+    name = input("Please enter your name: ")
     email = login.login()
     # seats =
 
-    if selected_row <= 4:
+    if selected_row <= 5:
         ticket_cost = FRONT_SEAT_PRICE  # Front Seat
-    elif selected_row <= 10:
+    elif selected_row <= 11:
         ticket_cost = MIDDLE_SEAT_PRICE  # Middle Seat
     else:
         ticket_cost = BACK_SEAT_PRICE  # Back Seat
@@ -143,6 +143,21 @@ def receipt(selected_row):
     }
 
     return receipts
+
+
+def search_custom(receipts):
+    # key_list = list(receipts.keys())
+    # print(key_list)
+
+    # name = input("\nEnter a name: ")
+    found = False  # iterator for NOT MATCHES results
+
+    # for key in key_list:
+    #   if name.lower() in key.lower():
+    #      found = True
+
+    # if not found:
+    #   print("Sorry this person is not a Lupita's friend :(\n")
 
 
 def save_customer_data(receipts_data):
@@ -218,7 +233,7 @@ def menu():
             print_seating(seating)
 
         elif first_char == "s":
-            print("SEARCH")
+            search_custom(dict)
 
         elif first_char == "d":
             try:

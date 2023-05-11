@@ -1,10 +1,26 @@
 [
     {
-        "name": "Pedro",
-        "email": "pedro@pascal.com",
+        "name": "Edgar",
+        "email": "nure@hot.com",
+        "ticket_cost": 80,
+        "tax": 5.8,
+        "mask_fee": 5,
+        "total": 90.8
+    },
+    {
+        "name": "Robert Smith",
+        "email": "thecure@gmail.com",
         "ticket_cost": 50,
         "tax": 3.625,
         "mask_fee": 5,
         "total": 58.625
+    },
+    {
+        "name": "Chuck",
+        "email": "norris@hotmail.com",
+        "ticket_cost": 25,
+        "tax": 1.812,
+        "mask_fee": 5,
+        "total": 31.812
     }
 ]
