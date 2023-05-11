@@ -45,6 +45,10 @@ empty_covid = "e"
 NUM_R = 20
 NUM_C = 26
 
+FRONT_SEAT_PRICE = 80
+MIDDLE_SEAT_PRICE = 50
+BACK_SEAT_PRICE = 25
+
 
 def print_seating(seating):
     """
@@ -65,6 +69,10 @@ def print_seating(seating):
             else:
                 row_str += available_seat + " "
         print(row_str)
+
+    print(f"\nFront seats (rows 1-5) are ${FRONT_SEAT_PRICE} each")
+    print(f"Middle seats (rows 6-11) are ${MIDDLE_SEAT_PRICE} each")
+    print(f"Back seats (rows 12-20) are ${BACK_SEAT_PRICE} each")
 
 
 def buy_ticket():
@@ -131,8 +139,14 @@ def print_receipt(data):
 
     else:
         for receipt_data in customer_data:
+            print("\n -*- RECEIPT -*- \n")
+
             print("Name:", receipt_data["name"])
             print("Email:", receipt_data["email"])
+            print("Ticket Cost: $", receipt_data["ticket_cost"])
+            print("Tax: $", receipt_data["tax"])
+            print("Mask Fee: $", receipt_data["mask_fee"])
+            print("Total: $", receipt_data["total"])
 
             print("-" * 20)
 

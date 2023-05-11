@@ -1,0 +1,10 @@
+[
+    {
+        "name": "edgar",
+        "email": "hola@ho.com",
+        "ticket_cost": 80,
+        "tax": 5.8,
+        "mask_fee": 5,
+        "total": 90.8
+    }
+]
