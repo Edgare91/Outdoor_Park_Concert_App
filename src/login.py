@@ -42,25 +42,3 @@ def login():
 
         else:
             print("\nInvalid email adress, try again please.")
-
-
-def receipt():
-    name = input("Please emter your name: ")
-    email = login()
-    # seats =
-    ticket_cost = 80
-    tax = ticket_cost * 0.0725
-    mask_fee = 5
-    total = ticket_cost + tax + mask_fee
-
-    receipts = {
-        "name": name,
-        "email": email,
-        # seats =
-        "ticket_cost": ticket_cost,
-        "tax": tax,
-        "mask_fee": mask_fee,
-        "total": total,
-    }
-
-    return receipts

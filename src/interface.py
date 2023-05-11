@@ -99,19 +99,50 @@ def buy_ticket():
             print("Seat already taken. Please try again.")
             continue
 
+        selected_row = row
+
         break
 
     # Add the seat to the seating dictionary
     # seating[(row, col)] = {"Name": name, "E-mail", email}
     seating[(row, col)] = occupied_seat
 
-    receipts_data = login.receipt()
+    receipts_data = receipt(selected_row)
 
     save_customer_data(receipts_data)
 
     save_seating_data(seating)
 
     print_seating(seating)
+
+
+def receipt(selected_row):
+    name = input("Please emter your name: ")
+    email = login.login()
+    # seats =
+
+    if selected_row <= 4:
+        ticket_cost = FRONT_SEAT_PRICE  # Front Seat
+    elif selected_row <= 10:
+        ticket_cost = MIDDLE_SEAT_PRICE  # Middle Seat
+    else:
+        ticket_cost = BACK_SEAT_PRICE  # Back Seat
+
+    tax = round(ticket_cost * 0.0725, 3)
+    mask_fee = 5
+    total = round(ticket_cost + tax + mask_fee, 3)
+
+    receipts = {
+        "name": name,
+        "email": email,
+        # seats =
+        "ticket_cost": ticket_cost,
+        "tax": tax,
+        "mask_fee": mask_fee,
+        "total": total,
+    }
+
+    return receipts
 
 
 def save_customer_data(receipts_data):
@@ -140,13 +171,12 @@ def print_receipt(data):
     else:
         for receipt_data in customer_data:
             print("\n -*- RECEIPT -*- \n")
-
             print("Name:", receipt_data["name"])
             print("Email:", receipt_data["email"])
-            print("Ticket Cost: $", receipt_data["ticket_cost"])
-            print("Tax: $", receipt_data["tax"])
-            print("Mask Fee: $", receipt_data["mask_fee"])
-            print("Total: $", receipt_data["total"])
+            print("Ticket Cost: ${}".format(receipt_data["ticket_cost"]))
+            print("Tax: ${:.2f}".format(receipt_data["tax"]))
+            print("Mask Fee: ${}".format(receipt_data["mask_fee"]))
+            print("Total: ${:.2f}".format(receipt_data["total"]))
 
             print("-" * 20)
 
